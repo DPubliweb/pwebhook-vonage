@@ -64,7 +64,7 @@ def delivery_receipt():
         #message_timestamp = data['message-timestamp']
         #row = [msisdn, to, network_code, message_id, price, status, scts, err_code, api_key, message_timestamp]
         #print(data)
-##
+    print(data)
     return ('DLR', 200)
 
 @app.route('/webhooks/inbound-sms', methods=['GET', 'POST'])
@@ -91,7 +91,7 @@ def inbound_sms():
            sheet.append_row(row)
         else: 
             print(row)
-        print(data)
+    print(data)
     return ('Inbound', 200)
 
 
