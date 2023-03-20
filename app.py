@@ -47,7 +47,7 @@ client = gspread.authorize(creds)
 
 @app.route('/webhooks/delivery-receipt', methods=['GET', 'POST'])
 def delivery_receipt():
-    print('hello1')
+    app.logger.info("Program running correctly")
     if request.is_json:
         print(request.get_json())
     else:
@@ -73,9 +73,11 @@ def inbound_sms():
     print('hello2')
     if request.is_json:
         print('json')
+        app.logger.info("Program running correctly")
         print(request.get_json(), 'salut2')
     else:
         data = dict(request.form) or dict(request.args)
+        app.logger.info("Program running correctly-2")
         print('pas json', data)
         ##msisdn = data['msisdn']
         to = data['to']
