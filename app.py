@@ -85,12 +85,12 @@ def inbound_sms():
         ##api_key = data['api-key']
         message_timestamp = data['message-timestamp']
         row = [to, text, message_timestamp]
-        ##keys = ["1","2","3"]
-        ##if text in keys :
-        ##   sheet = client.open("Campagne Réno Réponses").sheet1
-        ##   sheet.append_row(row)
-        ##else: 
-        ##    print(row)
+        keys = ["1","2","3"]
+        if text in keys :
+           sheet = client.open("Campagne Réno Réponses").sheet1
+           sheet.append_row(row)
+        else: 
+            print(row)
         print(data)
     return ('Inbound', 204)
 
