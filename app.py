@@ -70,9 +70,11 @@ def delivery_receipt():
 @app.route('/webhooks/inbound-sms', methods=['GET', 'POST'])
 def inbound_sms():
     if request.is_json:
+        print('json')
         print(request.get_json())
     else:
         data = dict(request.form) or dict(request.args)
+        print('pas json', data)
         ##msisdn = data['msisdn']
         ##to = data['to']
         ##message_id = data['messageId']
