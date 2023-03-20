@@ -51,20 +51,19 @@ def delivery_receipt():
         print(request.get_json())
     else:
         data = dict(request.form) or dict(request.args)
-        msisdn = data['msisdn']
-        to = data['to']
-        network_code = data['network-code']
-        message_id = data['messageId']
-        price = data['price']
-        status = data['status']
-        scts = data['scts']
-        err_code = data['err-code']
-        api_key = data['api-key']
-        message_timestamp = data['message-timestamp']
-        row = [msisdn, to, network_code, message_id, price, status, scts, err_code, api_key, message_timestamp]
-##        sheet = client.open("Delivery Receipts Vonage").sheet1
-##        sheet.append_row(row)
         print(data)
+        #msisdn = data['msisdn']
+        #to = data['to']
+        #network_code = data['network-code']
+        #message_id = data['messageId']
+        #price = data['price']
+        #status = data['status']
+        #scts = data['scts']
+        #err_code = data['err-code']
+        #api_key = data['api-key']
+        #message_timestamp = data['message-timestamp']
+        #row = [msisdn, to, network_code, message_id, price, status, scts, err_code, api_key, message_timestamp]
+        #print(data)
 ##
     return ('', 204)
 
