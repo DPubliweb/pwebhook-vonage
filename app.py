@@ -47,6 +47,7 @@ client = gspread.authorize(creds)
 
 @app.route('/webhooks/delivery-receipt', methods=['GET', 'POST'])
 def delivery_receipt():
+    print('hello1')
     if request.is_json:
         print(request.get_json())
     else:
@@ -64,14 +65,15 @@ def delivery_receipt():
         #message_timestamp = data['message-timestamp']
         #row = [msisdn, to, network_code, message_id, price, status, scts, err_code, api_key, message_timestamp]
         #print(data)
-    print(data)
+    print(data,'salut1')
     return ('DLR', 200)
 
 @app.route('/webhooks/inbound-sms', methods=['GET', 'POST'])
 def inbound_sms():
+    print('hello2')
     if request.is_json:
         print('json')
-        print(request.get_json())
+        print(request.get_json(), 'salut2')
     else:
         data = dict(request.form) or dict(request.args)
         print('pas json', data)
@@ -91,7 +93,7 @@ def inbound_sms():
            sheet.append_row(row)
         else: 
             print(row, 'ici rowww')
-    print(data)
+    print(data, 'salut1')
     return ('Inbound', 200)
 
 
