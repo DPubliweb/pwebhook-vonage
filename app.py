@@ -65,7 +65,7 @@ def delivery_receipt():
         #row = [msisdn, to, network_code, message_id, price, status, scts, err_code, api_key, message_timestamp]
         #print(data)
 ##
-    return ('', 204)
+    return ('DLR', 204)
 
 @app.route('/webhooks/inbound-sms', methods=['GET', 'POST'])
 def inbound_sms():
@@ -73,22 +73,24 @@ def inbound_sms():
         print(request.get_json())
     else:
         data = dict(request.form) or dict(request.args)
-        msisdn = data['msisdn']
-        to = data['to']
-        message_id = data['messageId']
-        mt_message_id = data['mt-message-id']
-        text = data['text']
-        message_type = data['type']
-        keyword =  data['keyword']
-        api_key = data['api-key']
-        message_timestamp = data['message-timestamp']
-        row = [msisdn, to, message_id, mt_message_id, text, message_type, keyword, api_key, message_timestamp]
-        keys = ["1","2","3"]
-        if text in keys :
-           sheet = client.open("Campagne Réno Réponses").sheet1
-           sheet.append_row(row)
-        else: 
-            print(row)
+        ##msisdn = data['msisdn']
+        ##to = data['to']
+        ##message_id = data['messageId']
+        ##mt_message_id = data['mt-message-id']
+        ##text = data['text']
+        ##message_type = data['type']
+        ##keyword =  data['keyword']
+        ##api_key = data['api-key']
+        ##message_timestamp = data['message-timestamp']
+        ##row = [msisdn, to, message_id, mt_message_id, text, message_type, keyword, api_key, message_timestamp]
+        ##keys = ["1","2","3"]
+        ##if text in keys :
+        ##   sheet = client.open("Campagne Réno Réponses").sheet1
+        ##   sheet.append_row(row)
+        ##else: 
+        ##    print(row)
+        print(data)
+    return ('Inbound', 204)
 
 
 
