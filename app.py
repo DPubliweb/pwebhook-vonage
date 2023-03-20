@@ -61,7 +61,7 @@ def delivery_receipt():
         err_code = data['err-code']
         api_key = data['api-key']
         message_timestamp = data['message-timestamp']
-        row = [msisdn, to, network_code, message_id, price, status, scts, err_code, client_ref, api_key, message_timestamp]
+        row = [msisdn, to, network_code, message_id, price, status, scts, err_code, api_key, message_timestamp]
 ##        sheet = client.open("Delivery Receipts Vonage").sheet1
 ##        sheet.append_row(row)
         print(data)
