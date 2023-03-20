@@ -90,7 +90,7 @@ def inbound_sms():
            sheet = client.open("Campagne Réno Réponses").sheet1
            sheet.append_row(row)
         else: 
-            print(row)
+            print(row, 'ici rowww')
     print(data)
     return ('Inbound', 200)
 
