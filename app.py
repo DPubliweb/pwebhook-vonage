@@ -54,8 +54,8 @@ def delivery_receipt():
         data = dict(request.form) or dict(request.args)
         print(data)
         #msisdn = data['msisdn']
-        #to = data['to']
-        #network_code = data['network-code']
+        to = data['to']
+        network_code = data['network-code']
         #message_id = data['messageId']
         #price = data['price']
         #status = data['status']
@@ -65,7 +65,7 @@ def delivery_receipt():
         #message_timestamp = data['message-timestamp']
         #row = [msisdn, to, network_code, message_id, price, status, scts, err_code, api_key, message_timestamp]
         #print(data)
-    print(data,'salut1')
+    print(data, network_code, to, 'salut1')
     return ('DLR', 200)
 
 @app.route('/webhooks/inbound-sms', methods=['GET', 'POST'])
