@@ -10,9 +10,13 @@ from oauth2client.service_account import ServiceAccountCredentials
 from google.oauth2.credentials import Credentials
 import google.auth
 from dotenv import load_dotenv
+from apscheduler.schedulers.background import BackgroundScheduler
+from datetime import datetime, timezone
+
 
 
 app = Flask(__name__)
+scheduler = BackgroundScheduler()
 
 #scope = ['https://www.googleapis.com/auth/spreadsheets',
 #         "https://www.googleapis.com/auth/drive"]
@@ -44,6 +48,25 @@ app = Flask(__name__)
 #
 #client = gspread.authorize(creds)
 #
+
+def csv_empty():
+    load_dotenv()
+    access_key = os.environ.get("AWS_ACCESS_KEY")
+    secret_key = os.environ.get("AWS_SECRET_KEY")
+    
+    # Connect to the S3 service
+    s3 = boto3.client('s3', aws_access_key_id=access_key, aws_secret_access_key=secret_key)
+    
+    # Supprimer le contenu du fichier CSV
+    s3.put_object(Bucket='data-vonage', Key='delivery-report.csv', Body='')
+
+# Planifier l'exécution de la fonction toutes les semaines
+
+
+start_time = datetime(2023, 5, 18, 13, 40, 0, tzinfo=timezone.utc)  # Date et heure spécifiques pour le début de la tâche
+scheduler.add_job(csv_empty, 'interval', weeks=1, next_run_time=start_time)
+scheduler.start()
+
 
 @app.route('/webhooks/delivery-receipt', methods=['GET', 'POST'])
 def delivery_receipt():
@@ -134,7 +157,7 @@ def inbound_sms():
         message_timestamp = data['message-timestamp']
         row = [to, text, message_timestamp]
         keys = ["1","2","3"]
-        
+
     print(data, 'salut1')
     return ('Inbound', 200)
 
