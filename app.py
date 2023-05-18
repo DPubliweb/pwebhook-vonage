@@ -56,17 +56,36 @@ def delivery_receipt():
         msisdn = data['msisdn']
         to = data['to']
         network_code = data['network-code']
-        message_id = data['messageId']
-        price = data['price']
         status = data['status']
-        #network = data['network']
-        #scts = data['scts']
         err_code = data['err-code']
-        #api_key = data['api-key']
-        #message_timestamp = data['message-timestamp']
-        #row = [msisdn, to, network_code, message_id, price, status, scts, err_code, api_key, message_timestamp]
-        #print(data)
-
+        if network_code == '20801':
+            network = 'FRTE'
+        elif network_code == '20810':
+            network = 'SFR0'
+        elif network_code == '20815':
+            network = 'FREE'
+        elif network_code == '20820':
+            network = 'BOUY'
+        elif network_code == '20826':
+            network = 'NRJ'
+        elif network_code == '20827':
+            network = 'LYCA'
+        elif network_code == '20830':
+            network = 'SMAA'
+        elif network_code == '20838':
+            network = 'LEFR'
+        elif network_code == '20822':
+            network = 'TRAT'
+        elif network_code == '20831':
+            network = 'MUND'
+        elif network_code == '20824':
+            network = 'MOQU'
+        elif network_code == '20817':
+            network = 'LEGO'
+        elif network_code == '20834':
+            network = 'CEHI'
+        else:
+            network = 'null'
         load_dotenv()
         access_key = os.environ.get("AWS_ACCESS_KEY")
         secret_key = os.environ.get("AWS_SECRET_KEY")
@@ -77,7 +96,10 @@ def delivery_receipt():
         
         # Add the new data to the existing data
         #new_data = [[phone, statut, date]]
-        new_data = [[to, network_code, err_code ]]
+        if network != 'null':
+            new_data = [[msisdn,status,network]]
+        else:
+            new_data = [[msisdn,status]]
 
         
         # Write the updated data to the S3 bucket
