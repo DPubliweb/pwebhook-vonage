@@ -53,20 +53,42 @@ def delivery_receipt():
     else:
         data = dict(request.form) or dict(request.args)
         print(data)
-        #msisdn = data['msisdn']
+        msisdn = data['msisdn']
         to = data['to']
         network_code = data['network-code']
-        #message_id = data['messageId']
-        #price = data['price']
-        #status = data['status']
+        message_id = data['messageId']
+        price = data['price']
+        status = data['status']
+        network = data['network']
         #scts = data['scts']
-        #err_code = data['err-code']
+        err_code = data['err-code']
         #api_key = data['api-key']
         #message_timestamp = data['message-timestamp']
         #row = [msisdn, to, network_code, message_id, price, status, scts, err_code, api_key, message_timestamp]
         #print(data)
-    print(data, network_code, to, 'salut1')
-    return ('DLR', 200)
+
+        load_dotenv()
+        access_key = os.environ.get("AWS_ACCESS_KEY")
+        secret_key = os.environ.get("AWS_SECRET_KEY")
+        # Connect to the S3 service
+        s3 = boto3.client('s3', aws_access_key_id=access_key, aws_secret_access_key=secret_key)
+        # Read the existing data from the S3 bucket
+        existing_data = s3.get_object(Bucket='data-vonage', Key='delivery-report.csv')['Body'].read().decode('utf-8')
+        
+        # Add the new data to the existing data
+        #new_data = [[phone, statut, date]]
+        new_data = [[to, network_code, err_code ]]
+
+        
+        # Write the updated data to the S3 bucket
+        csvfile = io.StringIO()
+        writer = csv.writer(csvfile)
+        for line in csv.reader(existing_data.splitlines()):
+            writer.writerow(line)
+        writer.writerows(new_data)
+        s3.put_object(Bucket='data-vonage', Key='delivery-report.csv', Body=csvfile.getvalue()) 
+
+        return "Done DR !"
 
 @app.route('/webhooks/inbound-sms', methods=['GET', 'POST'])
 def inbound_sms():
