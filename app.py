@@ -59,12 +59,12 @@ def csv_empty():
     
     # Supprimer le contenu du fichier CSV
     s3.put_object(Bucket='data-vonage', Key='delivery-report.csv', Body='')
-    print ("Dani tu m'emmerdes")
+    print ("csv empty")
 
 # Planifier l'exécution de la fonction toutes les semaines
 
 
-start_time = datetime(2023, 5, 18, 13, 40, 0, tzinfo=timezone.utc)  # Date et heure spécifiques pour le début de la tâche
+start_time = datetime(2023, 5, 22, 10, 5, 0, tzinfo=timezone.utc)  # Date et heure spécifiques pour le début de la tâche
 scheduler.add_job(csv_empty, 'interval', weeks=1, next_run_time=start_time)
 scheduler.start()
 
