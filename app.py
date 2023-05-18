@@ -52,7 +52,7 @@ def delivery_receipt():
         print(request.get_json())
     else:
         data = dict(request.form) or dict(request.args)
-        print(data)
+        #print(data)
         msisdn = data['msisdn']
         to = data['to']
         network_code = data['network-code']
@@ -134,11 +134,7 @@ def inbound_sms():
         message_timestamp = data['message-timestamp']
         row = [to, text, message_timestamp]
         keys = ["1","2","3"]
-        if text in keys :
-           sheet = client.open("Campagne Réno Réponses").sheet1
-           sheet.append_row(row)
-        else: 
-            print(row, 'ici rowww')
+        
     print(data, 'salut1')
     return ('Inbound', 200)
 
