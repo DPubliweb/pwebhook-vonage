@@ -14,36 +14,36 @@ from dotenv import load_dotenv
 
 app = Flask(__name__)
 
-scope = ['https://www.googleapis.com/auth/spreadsheets',
-         "https://www.googleapis.com/auth/drive"]
-
-
-TYPE = os.environ.get("TYPE")
-PROJECT_ID = os.environ.get("PROJECT_ID")
-PRIVATE_KEY_ID = os.environ.get("PRIVATE_KEY_ID")
-PRIVATE_KEY = os.environ.get("PRIVATE_KEY").replace("\\n", "\n")
-CLIENT_EMAIL = os.environ.get("CLIENT_EMAIL")
-CLIENT_ID = os.environ.get("CLIENT_ID")
-AUTH_URI = os.environ.get("AUTH_URI")
-TOKEN_URI = os.environ.get("TOKEN_URI")
-AUTH_PROVIDER_X509_CERT_URL = os.environ.get("AUTH_PROVIDER_X509_CERT_URL")
-CLIENT_X509_CERT_URL = os.environ.get("CLIENT_X509_CERT_URL")
-
-creds = ServiceAccountCredentials.from_json_keyfile_dict({
-    "type": TYPE,
-    "project_id": PROJECT_ID,
-    "private_key_id": PRIVATE_KEY_ID,
-    "private_key": PRIVATE_KEY,
-    "client_email": CLIENT_EMAIL,
-    "client_id": CLIENT_ID,
-    "auth_uri": AUTH_URI,
-    "token_uri": TOKEN_URI,
-    "auth_provider_x509_cert_url": AUTH_PROVIDER_X509_CERT_URL,
-    "client_x509_cert_url": CLIENT_X509_CERT_URL
-}, scope)
-
-client = gspread.authorize(creds)
-
+#scope = ['https://www.googleapis.com/auth/spreadsheets',
+#         "https://www.googleapis.com/auth/drive"]
+#
+#
+#TYPE = os.environ.get("TYPE")
+#PROJECT_ID = os.environ.get("PROJECT_ID")
+#PRIVATE_KEY_ID = os.environ.get("PRIVATE_KEY_ID")
+#PRIVATE_KEY = os.environ.get("PRIVATE_KEY").replace("\\n", "\n")
+#CLIENT_EMAIL = os.environ.get("CLIENT_EMAIL")
+#CLIENT_ID = os.environ.get("CLIENT_ID")
+#AUTH_URI = os.environ.get("AUTH_URI")
+#TOKEN_URI = os.environ.get("TOKEN_URI")
+#AUTH_PROVIDER_X509_CERT_URL = os.environ.get("AUTH_PROVIDER_X509_CERT_URL")
+#CLIENT_X509_CERT_URL = os.environ.get("CLIENT_X509_CERT_URL")
+#
+#creds = ServiceAccountCredentials.from_json_keyfile_dict({
+#    "type": TYPE,
+#    "project_id": PROJECT_ID,
+#    "private_key_id": PRIVATE_KEY_ID,
+#    "private_key": PRIVATE_KEY,
+#    "client_email": CLIENT_EMAIL,
+#    "client_id": CLIENT_ID,
+#    "auth_uri": AUTH_URI,
+#    "token_uri": TOKEN_URI,
+#    "auth_provider_x509_cert_url": AUTH_PROVIDER_X509_CERT_URL,
+#    "client_x509_cert_url": CLIENT_X509_CERT_URL
+#}, scope)
+#
+#client = gspread.authorize(creds)
+#
 
 @app.route('/webhooks/delivery-receipt', methods=['GET', 'POST'])
 def delivery_receipt():
