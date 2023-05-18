@@ -59,6 +59,7 @@ def csv_empty():
     
     # Supprimer le contenu du fichier CSV
     s3.put_object(Bucket='data-vonage', Key='delivery-report.csv', Body='')
+    print ("Dani tu m'emmerdes")
 
 # Planifier l'exécution de la fonction toutes les semaines
 
