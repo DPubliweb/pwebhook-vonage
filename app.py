@@ -138,30 +138,35 @@ def delivery_receipt():
 
 @app.route('/webhooks/inbound-sms', methods=['GET', 'POST'])
 def inbound_sms():
-    print('hello2')
     if request.is_json:
-        print('json')
-        app.logger.info("Program running correctly")
-        print(request.get_json(), 'salut2')
-    else:
-        data = dict(request.form) or dict(request.args)
-        app.logger.info("Program running correctly-2")
-        print('pas json', data)
-        ##msisdn = data['msisdn']
-        to = data['to']
-        ##message_id = data['messageId']
-        ##mt_message_id = data['mt-message-id']
+        data = request.get_json
+        msisdn = data['msisdn']
         text = data['text']
-        ##message_type = data['type']
-        ##keyword =  data['keyword']
-        ##api_key = data['api-key']
+        keyword =  data['keyword']
         message_timestamp = data['message-timestamp']
-        row = [to, text, message_timestamp]
-        keys = ["1","2","3"]
+        date = message_timestamp[:10]
 
-    print(data, 'salut1')
-    return ('Inbound', 200)
+        print(request.get_json(), 'salut2')
+        load_dotenv()
+        access_key = os.environ.get("AWS_ACCESS_KEY")
+        secret_key = os.environ.get("AWS_SECRET_KEY")
+        # Connect to the S3 service
+        s3 = boto3.client('s3', aws_access_key_id=access_key, aws_secret_access_key=secret_key)
+        # Read the existing data from the S3 bucket
+        existing_data = s3.get_object(Bucket='data-vonage', Key='stops-report.csv')['Body'].read().decode('utf-8')
+        new_data = [[msisdn,keyword,date]]
+        
+        # Write the updated data to the S3 bucket
+        csvfile = io.StringIO()
+        writer = csv.writer(csvfile)
+        for line in csv.reader(existing_data.splitlines()):
+            writer.writerow(line)
+        writer.writerows(new_data)
+        s3.put_object(Bucket='data-vonage', Key='stops-report.csv', Body=csvfile.getvalue()) 
 
+        return "Done SR !"
+    else:
+        return "none"
 
 
 if __name__ == "__main__":
