@@ -59,7 +59,7 @@ def delivery_receipt():
         message_id = data['messageId']
         price = data['price']
         status = data['status']
-        network = data['network']
+        #network = data['network']
         #scts = data['scts']
         err_code = data['err-code']
         #api_key = data['api-key']
