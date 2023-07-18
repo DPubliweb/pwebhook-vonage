@@ -135,7 +135,7 @@ def inbound_sms():
 
         return "Done SR !"
     else:
-        data = request.get_json
+        data = request.get_json()
         msisdn = data['msisdn']
         text = data['text']
         keyword =  data['keyword']
