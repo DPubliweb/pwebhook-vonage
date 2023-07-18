@@ -108,7 +108,7 @@ scheduler.start()
 @app.route('/webhooks/inbound-sms', methods=['GET', 'POST'])
 def inbound_sms():
     if request.is_json:
-        data = request.get_json
+        data = request.get_json()
         msisdn = data['msisdn']
         text = data['text']
         keyword =  data['keyword']
