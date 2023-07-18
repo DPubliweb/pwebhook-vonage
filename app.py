@@ -135,6 +135,7 @@ def inbound_sms():
 
         return "Done SR !"
     else:
+        print("else")
         data = request.get_json()
         msisdn = data['msisdn']
         text = data['text']
@@ -159,7 +160,6 @@ def inbound_sms():
             writer.writerow(line)
         writer.writerows(new_data)
         s3.put_object(Bucket='data-vonage', Key='stops-report.csv', Body=csvfile.getvalue()) 
-        print('here')
         return "none"
 
 
