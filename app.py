@@ -135,6 +135,30 @@ def inbound_sms():
 
         return "Done SR !"
     else:
+        data = request.get_json
+        msisdn = data['msisdn']
+        text = data['text']
+        keyword =  data['keyword']
+        message_timestamp = data['message-timestamp']
+        date = message_timestamp[:10]
+
+        print(request.get_json(), 'salut2')
+        load_dotenv()
+        access_key = os.environ.get("AWS_ACCESS_KEY")
+        secret_key = os.environ.get("AWS_SECRET_KEY")
+        # Connect to the S3 service
+        s3 = boto3.client('s3', aws_access_key_id=access_key, aws_secret_access_key=secret_key)
+        # Read the existing data from the S3 bucket
+        existing_data = s3.get_object(Bucket='data-vonage', Key='stops-report.csv')['Body'].read().decode('utf-8')
+        new_data = [[msisdn,keyword,date]]
+        
+        # Write the updated data to the S3 bucket
+        csvfile = io.StringIO()
+        writer = csv.writer(csvfile)
+        for line in csv.reader(existing_data.splitlines()):
+            writer.writerow(line)
+        writer.writerows(new_data)
+        s3.put_object(Bucket='data-vonage', Key='stops-report.csv', Body=csvfile.getvalue()) 
         print('here')
         return "none"
 
