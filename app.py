@@ -135,31 +135,30 @@ def inbound_sms():
 
         return "Done SR !"
     else:
-        print("else")
-        msisdn = request.form.get('msisdn')
-        text = request.form.get('text')
-        keyword = request.form.get('keyword')
-        message_timestamp = request.form.get('message-timestamp')
-        date = message_timestamp[:10]
-
-        print(request.get_json(), 'salut2')
-        load_dotenv()
-        access_key = os.environ.get("AWS_ACCESS_KEY")
-        secret_key = os.environ.get("AWS_SECRET_KEY")
-        # Connect to the S3 service
-        s3 = boto3.client('s3', aws_access_key_id=access_key, aws_secret_access_key=secret_key)
-        # Read the existing data from the S3 bucket
-        existing_data = s3.get_object(Bucket='data-vonage', Key='stops-report.csv')['Body'].read().decode('utf-8')
-        new_data = [[msisdn,keyword,date]]
-        
-        # Write the updated data to the S3 bucket
-        csvfile = io.StringIO()
-        writer = csv.writer(csvfile)
-        for line in csv.reader(existing_data.splitlines()):
-            writer.writerow(line)
-        writer.writerows(new_data)
-        s3.put_object(Bucket='data-vonage', Key='stops-report.csv', Body=csvfile.getvalue()) 
-        return "none"
+        if request.form:
+            msisdn = request.form.get('msisdn')
+            text = request.form.get('text')
+            keyword = request.form.get('keyword')
+            message_timestamp = request.form.get('message-timestamp')
+            load_dotenv()
+            access_key = os.environ.get("AWS_ACCESS_KEY")
+            secret_key = os.environ.get("AWS_SECRET_KEY")
+            # Connect to the S3 service
+            s3 = boto3.client('s3', aws_access_key_id=access_key, aws_secret_access_key=secret_key)
+            # Read the existing data from the S3 bucket
+            existing_data = s3.get_object(Bucket='data-vonage', Key='stops-report.csv')['Body'].read().decode('utf-8')
+            new_data = [[msisdn,keyword,date]]
+            
+            # Write the updated data to the S3 bucket
+            csvfile = io.StringIO()
+            writer = csv.writer(csvfile)
+            for line in csv.reader(existing_data.splitlines()):
+                writer.writerow(line)
+            writer.writerows(new_data)
+            s3.put_object(Bucket='data-vonage', Key='stops-report.csv', Body=csvfile.getvalue()) 
+        else:
+        # Gérer le cas où la requête n'est ni au format JSON ni au format de formulaire
+            return "Requête invalide"
 
 
 if __name__ == "__main__":
