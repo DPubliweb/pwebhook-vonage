@@ -136,11 +136,10 @@ def inbound_sms():
         return "Done SR !"
     else:
         print("else")
-        data = request.get_json()
-        msisdn = data['msisdn']
-        text = data['text']
-        keyword =  data['keyword']
-        message_timestamp = data['message-timestamp']
+        msisdn = request.form.get('msisdn')
+        text = request.form.get('text')
+        keyword = request.form.get('keyword')
+        message_timestamp = request.form.get('message-timestamp')
         date = message_timestamp[:10]
 
         print(request.get_json(), 'salut2')
