@@ -136,6 +136,7 @@ def inbound_sms():
         return "Done SR !"
     else:
         if request.form:
+            print(request.form)
             msisdn = request.form.get('msisdn')
             text = request.form.get('text')
             keyword = request.form.get('keyword')
