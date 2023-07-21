@@ -127,7 +127,7 @@ def inbound_sms():
         message_timestamp = data['message-timestamp']
         date = message_timestamp[:10]
 
-        print(request.get_json(), 'salut2')
+        print(request.get_json(), 'salut1')
         load_dotenv()
         access_key = os.environ.get("AWS_ACCESS_KEY")
         secret_key = os.environ.get("AWS_SECRET_KEY")
@@ -148,7 +148,7 @@ def inbound_sms():
         return "Done SR !"
     else:
         if request.form:
-            print(request.form)
+            print(request.form, 'salut2')
             msisdn = request.form.get('msisdn')
             text = request.form.get('text')
             keyword = request.form.get('keyword')
