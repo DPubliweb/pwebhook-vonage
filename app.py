@@ -48,54 +48,53 @@ def delivery_receipt():
     if request.is_json:
         print(request.get_json())
     else:
-        data = dict(request.form) or dict(request.args)
-        #print(data)
-        msisdn = data['msisdn']
-        to = data['to']
-        network_code = data['network-code']
-        status = data['status']
-        err_code = data['err-code']
-        if network_code == '20801':
-            network = 'FRTE'
-        elif network_code == '20810':
-            network = 'SFR0'
-        elif network_code == '20815':
-            network = 'FREE'
-        elif network_code == '20820':
-            network = 'BOUY'
-        elif network_code == '20826':
-            network = 'NRJ'
-        elif network_code == '20827':
-            network = 'LYCA'
-        elif network_code == '20830':
-            network = 'SMAA'
-        elif network_code == '20838':
-            network = 'LEFR'
-        elif network_code == '20822':
-            network = 'TRAT'
-        elif network_code == '20831':
-            network = 'MUND'
-        elif network_code == '20824':
-            network = 'MOQU'
-        elif network_code == '20817':
-            network = 'LEGO'
-        elif network_code == '20834':
-            network = 'CEHI'
-        else:
-            network = 'null'
-        load_dotenv()
-
-        if network != 'null':
-            new_data = [[msisdn, status, network]]
-        else:
-            new_data = [[msisdn, status]]
-
-        delivery_data.append(new_data)  # Ajouter les nouvelles données à la liste
-
-        if len(delivery_data) >= ROW_LIMIT:
-            write_delivery_data_to_s3()
-            
-        return "Done DR !"
+        if request.form:
+            print(request.form)
+            msisdn = request.form.get('msisdn')
+            network_code = request.form.get('network-code')
+            status = request.form.get('status')
+            #print(data)
+            if network_code == '20801':
+                network = 'FRTE'
+            elif network_code == '20810':
+                network = 'SFR0'
+            elif network_code == '20815':
+                network = 'FREE'
+            elif network_code == '20820':
+                network = 'BOUY'
+            elif network_code == '20826':
+                network = 'NRJ'
+            elif network_code == '20827':
+                network = 'LYCA'
+            elif network_code == '20830':
+                network = 'SMAA'
+            elif network_code == '20838':
+                network = 'LEFR'
+            elif network_code == '20822':
+                network = 'TRAT'
+            elif network_code == '20831':
+                network = 'MUND'
+            elif network_code == '20824':
+                network = 'MOQU'
+            elif network_code == '20817':
+                network = 'LEGO'
+            elif network_code == '20834':
+                network = 'CEHI'
+            else:
+                network = 'null'
+            load_dotenv()
+    
+            if network != 'null':
+                new_data = [[msisdn, status, network]]
+            else:
+                new_data = [[msisdn, status]]
+    
+            delivery_data.append(new_data)  # Ajouter les nouvelles données à la liste
+    
+            if len(delivery_data) >= 10:
+                write_delivery_data_to_s3()
+    
+            return "Done DR !"
     
 def write_delivery_data_to_s3():
     load_dotenv()
