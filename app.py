@@ -1,14 +1,9 @@
 from flask import Flask, flash, request, redirect, render_template, send_file, url_for, make_response, after_this_request
-import json
 import os
 import pandas as pd
 import boto3
 import csv
 import io
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
-from google.oauth2.credentials import Credentials
-import google.auth
 from dotenv import load_dotenv
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime, timezone
