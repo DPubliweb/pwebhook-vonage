@@ -39,59 +39,52 @@ delivery_data = []
 
 @app.route('/webhooks/delivery-receipt', methods=['GET', 'POST'])
 def delivery_receipt():
-    app.logger.info("Program running correctly")
-    if request.is_json:
-        print(request.get_json())
-    else:
-        data = dict(request.form) or dict(request.args)
-        #print(data)
-        msisdn = data['msisdn']
-        to = data['to']
-        network_code = data['network-code']
-        status = data['status']
-        err_code = data['err-code']
-        if network_code == '20801':
-            network = 'FRTE'
-        elif network_code == '20810':
-            network = 'SFR0'
-        elif network_code == '20815':
-            network = 'FREE'
-        elif network_code == '20820':
-            network = 'BOUY'
-        elif network_code == '20826':
-            network = 'NRJ'
-        elif network_code == '20827':
-            network = 'LYCA'
-        elif network_code == '20830':
-            network = 'SMAA'
-        elif network_code == '20838':
-            network = 'LEFR'
-        elif network_code == '20822':
-            network = 'TRAT'
-        elif network_code == '20831':
-            network = 'MUND'
-        elif network_code == '20824':
-            network = 'MOQU'
-        elif network_code == '20817':
-            network = 'LEGO'
-        elif network_code == '20834':
-            network = 'CEHI'
+    try:
+        app.logger.info("Program running correctly")
+
+        if request.is_json:
+            data = request.get_json()
         else:
-            network = 'null'
+            data = dict(request.form) or dict(request.args)
+
+        msisdn = data.get('msisdn')
+        to = data.get('to')
+        network_code = data.get('network-code')
+        status = data.get('status')
+        err_code = data.get('err-code')
+
+        network = {
+            '20801': 'FRTE',
+            '20810': 'SFR0',
+            '20815': 'FREE',
+            '20820': 'BOUY',
+            '20826': 'NRJ',
+            '20827': 'LYCA',
+            '20830': 'SMAA',
+            '20838': 'LEFR',
+            '20822': 'TRAT',
+            '20831': 'MUND',
+            '20824': 'MOQU',
+            '20817': 'LEGO',
+            '20834': 'CEHI',
+
+            # ... autres codes réseau
+        }.get(network_code, 'null')
+
         load_dotenv()
 
-        if network != 'null':
-            new_data = [[msisdn, status, network]]
-        else:
-            new_data = [[msisdn, status]]
-
-        delivery_data.append(new_data)  # Ajouter les nouvelles données à la liste
+        new_data = [msisdn, status, network] if network != 'null' else [msisdn, status]
+        delivery_data.append(new_data)
 
         if len(delivery_data) >= ROW_LIMIT:
-            write_delivery_data_to_s3()
+            write_delivery_data_to_s3()  # fonction à définir
 
+        return "Done DR !", 200
 
-        return "Done DR !"
+    except Exception as e:
+        app.logger.error(f"An error occurred: {e}")
+        return "An error occurred", 200  # retournez 200 même en cas d'erreur si vous le souhaitez
+
     
 def write_delivery_data_to_s3():
     load_dotenv()
