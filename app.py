@@ -100,7 +100,7 @@ def write_delivery_data_to_s3():
     for line in csv.reader(existing_data.splitlines()):
         writer.writerow(line)
     for data in delivery_data:
-        writer.writerows(data)
+        writer.writerow(data)
     s3.put_object(Bucket='data-vonage', Key='delivery-report.csv', Body=csvfile.getvalue())
 
     delivery_data.clear()  # Vider la liste après l'écriture sur S3
