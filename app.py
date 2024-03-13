@@ -39,6 +39,7 @@ delivery_data = []
 
 @app.route('/webhooks/delivery-receipt', methods=['GET', 'POST'])
 def delivery_receipt():
+    print('delivery')
     try:
         app.logger.info("Program running correctly")
 
